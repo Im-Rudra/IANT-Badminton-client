@@ -23,6 +23,7 @@ import OpenTournaments from './pages/TeamRegistration/OpenTournaments';
 import { ToastContainer } from 'react-toastify';
 import Home from './pages/Home/Home';
 import useAuth from './hooks/useAuth';
+import Teams from './pages/Admin/Tournament/Teams';
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +40,7 @@ const routes = createBrowserRouter(
         <Route path="tournaments" element={<TournamentLayout />}>
           <Route path="" element={<Tournaments />} />
           <Route path="create-tournament" element={<CreateTournament />} />
+          <Route path="teams/:tournamentID" element={<Teams />} />
         </Route>
       </Route>
     </>

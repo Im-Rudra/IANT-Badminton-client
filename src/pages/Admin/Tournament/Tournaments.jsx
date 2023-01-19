@@ -47,7 +47,14 @@ const Tournaments = () => {
     <div>
       {tournaments.length > 0 ? (
         tournaments.map((tournament, i) => {
-          return <TournamentCard key={tournament._id} tournament={tournament} />;
+          return (
+            <TournamentCard
+              key={tournament._id}
+              tournament={tournament}
+              link={`teams/${tournament._id}`}
+              buttonTitle="Teams"
+            />
+          );
         })
       ) : (
         <NoTournament

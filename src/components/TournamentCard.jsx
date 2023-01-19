@@ -5,7 +5,7 @@ import { IoPeople } from 'react-icons/io5';
 import { HiUser } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 
-const TournamentCard = ({ tournament }) => {
+const TournamentCard = ({ tournament, buttonTitle, link }) => {
   // const { tournamentName, status, totalTeams, singleTeams, doubleTeams } = tournament;
   return (
     <Card
@@ -19,8 +19,8 @@ const TournamentCard = ({ tournament }) => {
       extra={
         <>
           <Tag color={tournament.status === 'Open' ? 'green' : 'red'}>{tournament.status}</Tag>
-          <Link to={tournament._id}>
-            <Button type="primary">Team Registration</Button>
+          <Link to={link}>
+            <Button type="primary">{buttonTitle}</Button>
           </Link>
         </>
       }

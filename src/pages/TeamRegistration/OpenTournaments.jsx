@@ -48,7 +48,11 @@ const OpenTournaments = () => {
   return (
     <div className="container">
       {tournament?._id ? (
-        <TournamentCard tournament={tournament} />
+        <TournamentCard
+          tournament={tournament}
+          link={tournament._id}
+          buttonTitle="Team Registration"
+        />
       ) : (
         <NoTournament title="No tournament" subTitle="No tournament found for team registration." />
       )}
