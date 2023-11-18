@@ -1,18 +1,18 @@
-import { Card, Form, Input, Button, DatePicker, notification } from 'antd';
+import { Button, Card, DatePicker, Form, Input, notification } from 'antd';
 import axios from 'axios';
 import React from 'react';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getToken } from '../../../utils/utils';
 
 const CreateTournament = () => {
   const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
-  const openNotificationWithIcon = (type) => {
-    api[type]({
-      message: 'Tournament creation successful!'
-    });
-  };
+  // const openNotificationWithIcon = (type) => {
+  //   api[type]({
+  //     message: 'Tournament creation successful!'
+  //   });
+  // };
 
   const handleCreateTournament = (val) => {
     axios
@@ -24,6 +24,10 @@ const CreateTournament = () => {
       .then((res) => res.data)
       .then((data) => {
         // openNotificationWithIcon('success');
+        // if (data.error) {
+        console.log(data);
+        // return;
+        // }
         toast.success('Tournament creation successful!');
         navigate('/admin/tournaments');
         // console.log(data);
@@ -34,12 +38,16 @@ const CreateTournament = () => {
   };
 
   const onFinish = (values) => {
-    const { limit, ...rest } = values;
+    const { limit, singlePlayerEntryFee, doublePlayerEntryFee, ...rest } = values;
     const resObj = {
       ...rest,
       startTime: new Date(Date.parse(new Date(limit[0]).toDateString())),
-      endTime: new Date(Date.parse(new Date(limit[1]).toDateString()) + 86400000 - 1000)
+      endTime: new Date(Date.parse(new Date(limit[1]).toDateString()) + 86400000 - 1000),
+      singlePlayerEntryFee: Number(singlePlayerEntryFee),
+      doublePlayerEntryFee: Number(doublePlayerEntryFee)
     };
+    // console.log(resObj);
+    // return;
     handleCreateTournament(resObj);
   };
   return (
@@ -80,6 +88,33 @@ const CreateTournament = () => {
                 ]}
               >
                 <DatePicker.RangePicker format="DD MMM, YYYY" />
+              </Form.Item>
+
+              {/* entry fee */}
+              <Form.Item
+                label="Single Player Entry Fee"
+                name="singlePlayerEntryFee"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Entry Fee is required'
+                  }
+                ]}
+              >
+                <Input prefix="$" type="number" placeholder="Single Player Entry Fee" />
+              </Form.Item>
+
+              <Form.Item
+                label="Double Player Entry Fee"
+                name="doublePlayerEntryFee"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Entry Fee is required'
+                  }
+                ]}
+              >
+                <Input prefix="$" type="number" placeholder="Double Player Entry Fee" />
               </Form.Item>
 
               {/* Tournament year */}

@@ -1,5 +1,5 @@
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { Avatar, Card, Divider } from 'antd';
+import { Alert, Avatar, Card, Divider } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import React from 'react';
 
@@ -39,12 +39,16 @@ const Home = () => {
           <Divider />
           <div>
             <p className="font-bold text-lg mb-1">Date & Time</p>
-            <p>Date: February 11th & 12th</p>
-            <p>Time: 9.00 AM to 6.00 PM</p>
+            <p>Day-1: February 11th(2:30 PM - Till we finish). Team reporting at 2:00 PM</p>
+            <p>Day-2: February 12th(9.00 AM to 6.00 PM)</p>
             <p>Location: @IANT Multipurpose Hall</p>
-            <p>
+            <p className="mb-2">
               Registration deadline: <span className="font-bold">February 5th, 2023</span>
             </p>
+            <Alert
+              message="Due to conflict with another important event at IANT, our tournament timing will change on Saturday, February 11th, from 2:30 pm till we finish the schedule. Team reporting time will be at 2.00pm."
+              type="warning"
+            />
           </div>
 
           <Divider orientation="left">

@@ -25,6 +25,11 @@ const mainMenuLists = {
       title: 'Tournament Registration',
       url: 'team-registration',
       icon: <AiOutlineUsergroupAdd />
+    },
+    {
+      title: 'My Registration',
+      url: 'my-registration',
+      icon: <AiOutlineUsergroupAdd />
     }
   ],
   adminMenuList: [
@@ -133,7 +138,7 @@ const RootLayout = () => {
               className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
               id="navbar-sticky"
             >
-              <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+              <ul className="flex flex-col gap-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 {/* Main menu here */}
                 {mainMenuLists.generalMenuList.map((menu) => (
                   <li key={menu.url}>
