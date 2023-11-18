@@ -25,6 +25,8 @@ import Home from './pages/Home/Home';
 import useAuth from './hooks/useAuth';
 import Teams from './pages/Admin/Tournament/Teams';
 import MyRegistration from './pages/MyRegistration';
+import Success from './pages/Success';
+import Cancel from './pages/Cancel';
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +38,8 @@ const routes = createBrowserRouter(
         <Route path="team-registration/:tournamentID" element={<TeamRegistration />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="success" element={<Success />} />
+        <Route path="cancel" element={<Cancel />} />
       </Route>
       <Route path="admin" element={<AdminLayout />}>
         <Route path="users" element={<Users />} />

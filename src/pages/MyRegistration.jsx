@@ -6,11 +6,13 @@ import { BsCurrencyDollar, BsFillPeopleFill } from 'react-icons/bs';
 import { FaDollarSign, FaTrashAlt } from 'react-icons/fa';
 import { IoPerson } from 'react-icons/io5';
 import { getToken } from '../utils/utils';
+import { loadStripe } from '@stripe/stripe-js';
 // import { FaDollarSign } from 'react-icons/fa6';
 
 const MyRegistration = () => {
   const [myRegs, setMyRegs] = useState([]);
   const [delLoader, setDelLoader] = useState(false);
+  const [stripeLoading, setStripeLoading] = useState(false);
   const handleMyRegistrations = () => {
     axios
       .get(process.env.REACT_APP_SERVER_ORIGIN + 'myRegistrations', {
@@ -63,6 +65,41 @@ const MyRegistration = () => {
     handleMyRegistrations();
   }, []);
 
+  const handleCreateStripeSession = async (teamId) => {
+    const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+    setStripeLoading(true);
+    axios
+      .post(
+        process.env.REACT_APP_SERVER_ORIGIN + 'create-checkout-session',
+        { teamId },
+        {
+          headers: {
+            Authorization: getToken()
+          }
+        }
+      )
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(data);
+        if (!data.sessionId) {
+          return;
+        }
+        const result = stripe.redirectToCheckout({
+          sessionId: data.sessionId
+        });
+        console.log(result);
+        if (result.error) {
+          console.log(result.error);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setStripeLoading(false);
+      });
+  };
+
   return (
     <div className="container">
       <p className="text-2xl text-center font-semibold">
@@ -79,8 +116,7 @@ const MyRegistration = () => {
                 className="w-full"
                 title={
                   <p className="text-xl font-semibold">
-                    {reg.tournament.tournamentName}
-                    {' -'}
+                    {reg.tournament.tournamentName}{' '}
                     {reg.teamType === 'Single' ? (
                       <IoPerson className="inline" />
                     ) : (
@@ -122,7 +158,11 @@ const MyRegistration = () => {
                     </div>
                   </Button>
                   {reg.paymentStatus !== 'Verified' && (
-                    <Button type="primary">
+                    <Button
+                      type="primary"
+                      onClick={() => handleCreateStripeSession(reg._id)}
+                      loading={stripeLoading}
+                    >
                       <FaDollarSign className="inline" />
                       {reg.teamType === 'Single'
                         ? reg.tournament.singlePlayerEntryFee
