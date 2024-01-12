@@ -13,20 +13,20 @@ import RootLayout from './layouts/RootLayout';
 import TournamentLayout from './layouts/TournamentLayout';
 
 // page imports
-import Login from './pages/Login';
-import Register from './pages/Register';
-import TeamRegistration from './pages/TeamRegistration/TeamRegistration';
-import Users from './pages/Admin/User/Users';
-import Tournaments from './pages/Admin/Tournament/Tournaments';
-import CreateTournament from './pages/Admin/Tournament/CreateTournament';
-import OpenTournaments from './pages/TeamRegistration/OpenTournaments';
 import { ToastContainer } from 'react-toastify';
-import Home from './pages/Home/Home';
+import ProtectedRoute from './components/ProtectedRoute';
 import useAuth from './hooks/useAuth';
+import HomePageEditor from './pages/Admin/HomePageEditor';
+import CreateTournament from './pages/Admin/Tournament/CreateTournament';
 import Teams from './pages/Admin/Tournament/Teams';
+import Tournaments from './pages/Admin/Tournament/Tournaments';
+import Users from './pages/Admin/User/Users';
+import Home from './pages/Home/Home';
+import Login from './pages/Login';
 import MyRegistration from './pages/MyRegistration';
-import Success from './pages/Success';
-import Cancel from './pages/Cancel';
+import Register from './pages/Register';
+import OpenTournaments from './pages/TeamRegistration/OpenTournaments';
+import TeamRegistration from './pages/TeamRegistration/TeamRegistration';
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -38,10 +38,18 @@ const routes = createBrowserRouter(
         <Route path="team-registration/:tournamentID" element={<TeamRegistration />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
-        <Route path="success" element={<Success />} />
-        <Route path="cancel" element={<Cancel />} />
+        {/* <Route path="success" element={<Success />} />
+        <Route path="cancel" element={<Cancel />} /> */}
       </Route>
-      <Route path="admin" element={<AdminLayout />}>
+      <Route
+        path="admin"
+        element={
+          <ProtectedRoute role="Administrator">
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="" element={<HomePageEditor />} />
         <Route path="users" element={<Users />} />
         <Route path="tournaments" element={<TournamentLayout />}>
           <Route path="" element={<Tournaments />} />
@@ -71,7 +79,7 @@ const App = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="colored"
+        theme="light"
       />
       <RouterProvider router={routes} />
     </>

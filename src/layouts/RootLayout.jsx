@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { Button, Typography } from 'antd';
-import { MdAdminPanelSettings, MdSpaceDashboard } from 'react-icons/md';
+import React, { useState } from 'react';
 import { AiFillHome, AiOutlineUsergroupAdd } from 'react-icons/ai';
+import { HiMenu } from 'react-icons/hi';
+import { MdAdminPanelSettings, MdSpaceDashboard } from 'react-icons/md';
 import { RiLoginBoxFill } from 'react-icons/ri';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import FloatingMenu from '../components/FloatingMenu/FloatingMenu';
 import MainMenuButton from '../components/MainMenu/MainMenuButton';
-import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 import logo from '../img/logo.png';
-import { HiMenu } from 'react-icons/hi';
 import checkAccessiblity from '../utils/checkAccessiblity';
 
 const mainMenuLists = {
@@ -41,12 +40,12 @@ const mainMenuLists = {
   ],
   antiUserMenuList: [
     {
-      title: 'User Sign Up',
+      title: 'Sign Up',
       url: 'register',
       icon: <MdSpaceDashboard />
     },
     {
-      title: 'Sign In for Tournament',
+      title: 'Login',
       url: 'login',
       icon: <RiLoginBoxFill />
     }
@@ -63,24 +62,9 @@ const RootLayout = () => {
 
   const handleLogout = () => {
     localStorage.removeItem(process.env.REACT_APP_TOKEN_NAME);
+    sessionStorage.removeItem('user');
     setUser(null);
-    // axios
-    //   .post(process.env.REACT_APP_SERVER_ORIGIN + 'logout', null, {
-    //     headers: {
-    //       Authorization: getToken()
-    //     }
-    //   })
-    //   .then((res) => {
-    //     setUser(null);
-    //     if (res.data?.success) {
-    //       // console.log('he');
-    //       navigate('/login');
-    //     }
-    //     // console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    navigate('/login');
   };
 
   return (

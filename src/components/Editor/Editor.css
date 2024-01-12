@@ -1,0 +1,17 @@
+code > .inline-code::before,
+code > .inline-code::after {
+  content: none;
+}
+
+.ce-block__content,
+.ce-toolbar__content {
+  max-width: unset;
+}
+
+.tc-table {
+  border-left: 1px solid var(--color-border);
+}
+
+.inline-code {
+  font-weight: inherit !important;
+}

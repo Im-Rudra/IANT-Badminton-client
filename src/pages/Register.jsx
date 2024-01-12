@@ -1,14 +1,17 @@
-import { Button, Card, Form, Input } from 'antd';
+import { Button, Card, Form, Input, Spin } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth';
 import { getToken, setToken } from '../utils/utils';
+import { useState } from 'react';
 const Register = () => {
   const { setUser } = useAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const registerRequest = (val) => {
+    setLoading(true);
     axios
       .post(process.env.REACT_APP_SERVER_ORIGIN + 'register', val, {
         headers: {
@@ -28,12 +31,13 @@ const Register = () => {
           navigate('/');
         }
         res.data?.id && setUser(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((err) => {
         setUser(null);
         console.log(err.message);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const onFinish = (values) => {
@@ -46,6 +50,14 @@ const Register = () => {
 
   return (
     <div className="mx-auto">
+      {loading && (
+        <div
+          style={{ minHeight: 'calc(100vh - 170px)', backgroundColor: 'rgba(0, 0, 0, 0.2)' }}
+          className="fixed top-0 left-0 h-screen w-full flex justify-center items-center z-50"
+        >
+          <Spin size="large" />
+        </div>
+      )}
       <div className="flex justify-center sm:mt-0 lg:mt-36">
         <Card
           style={{

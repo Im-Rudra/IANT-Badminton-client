@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { getToken } from '../utils/utils';
+import { getSession, getToken, setSession } from '../utils/utils';
 
 const useFetchUser = () => {
   const [user, setUser] = useState(null);
@@ -16,17 +16,34 @@ const useFetchUser = () => {
       })
       .then((res) => {
         // console.log(res.data);
-        res?.data?.id && setUser(res.data);
-        setRootLoading(false);
+        if (res.data.id) {
+          setSession(res.data);
+          setUser(res.data);
+        }
       })
       .catch((err) => {
         console.log(err);
         setRootLoading(false);
         setUser(null);
+      })
+      .finally(() => {
+        setRootLoading(false);
       });
   };
 
   useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      setUser(null);
+      setRootLoading(false);
+      return;
+    }
+    const session = getSession();
+    if (session?.id) {
+      setUser(session);
+      setRootLoading(false);
+      return;
+    }
     fetchUser();
   }, []);
 

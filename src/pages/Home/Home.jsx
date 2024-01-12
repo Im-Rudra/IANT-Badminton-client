@@ -1,11 +1,16 @@
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { Alert, Avatar, Card, Divider } from 'antd';
 import Meta from 'antd/es/card/Meta';
-import React from 'react';
+import React, { useRef } from 'react';
+import { getItem } from '../Admin/HomePageEditor';
 
 import homeBanner from '../../img/home-banner.jpg';
+import Editor from '../../components/Editor/Editor';
 
 const Home = () => {
+  const editor = useRef();
+  const blocks = getItem();
+  // console.log(blocks);
   return (
     <div>
       {/* <div>
@@ -33,7 +38,7 @@ const Home = () => {
               IANT Open Badminton Tournament 2023!
             </span>
           </Divider> */}
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-center">
+          {/* <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-center">
             IANT Open Badminton Tournament 2023!
           </h1>
           <Divider />
@@ -71,7 +76,9 @@ const Home = () => {
             <p className="font-bold text-lg mb-1">For Assistance</p>
             <p>Manik: 786-999-9006</p>
             <p>Faruk: 214-414-6260</p>
-          </div>
+          </div> */}
+
+          <Editor editorRef={editor} readOnly={true} data={blocks} />
         </Card>
       </div>
     </div>

@@ -1,39 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Button, Card, Divider, Form, Input, Modal, Radio, Result, Spin } from 'antd';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import PopupRegistration from '../../components/PopupRegistration/PopupRegistration';
 import { toast } from 'react-toastify';
 import useAuth from '../../hooks/useAuth';
-import TermsAndRules from './TermsAndRules';
 import { getToken } from '../../utils/utils';
-
-const regConfirmMessage = {
-  Single: `Thank you for taking part in the IANT-Badminton Tournament!
-  To finalize your registration, kindly pay your entry fee.
-  The entry fee for a Single participant is $30.
-  To finish your transaction, kindly use Zelle. Please Zelle to Md. Omar Faruk (214-414-6260).`,
-  Double: `Thank you for taking part in the IANT-Badminton Tournament!
-  To finalize your registration, kindly pay your entry fee.
-  The entry fee for Double participants is $60.
-  To finish your transaction, kindly use Zelle. Please Zelle to Md. Omar Faruk (214-414-6260).`
-};
+import TermsAndRules from './TermsAndRules';
+import { regConfirmMessage } from '../../constants';
 
 const TeamRegistration = () => {
   const { user } = useAuth();
   const { tournamentID } = useParams();
-  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(true);
   const [teamType, setTeamType] = useState(null);
-  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-
-  // const showDrawer = () => {
-  //   setOpen(true);
-  // };
-  // const onClose = () => {
-  //   setOpen(false);
-  // };
 
   const [verdictObj, setVerdictObj] = useState(null);
   const [accept, setAccept] = useState(false);
@@ -61,12 +41,9 @@ const TeamRegistration = () => {
               toast.error(res.data.message);
               navigate(res.data.redirect);
             }
-            // console.log(data);
-            // setVerdictObj(null);
             setLoading(false);
             return toast.error(data.error.message);
           }
-          // console.log(data);
           setLoading(false);
           setVerdictObj(data);
         })
@@ -75,7 +52,6 @@ const TeamRegistration = () => {
           toast.error(err.message);
           console.log(err.message);
         });
-      // console.log(checkDoc);
     } catch (err) {
       console.log(err);
     }
@@ -83,6 +59,7 @@ const TeamRegistration = () => {
 
   useEffect(() => {
     checkRegistrablity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(user)]);
 
   const teamRegisterRequest = (val) => {
@@ -95,11 +72,7 @@ const TeamRegistration = () => {
       })
       .then((res) => {
         if (res.data.error) {
-          // console.log('error', res.data);
           setLoading(false);
-          // if (res.data.errorType === 'create-new-user') {
-          //   return setOpen(true);
-          // }
           if (res.data.error) {
             toast.error(res.data.message);
             if (res.data?.redirect) {
@@ -114,12 +87,11 @@ const TeamRegistration = () => {
             title: `${val.teamType} team registration successful`,
             content: regConfirmMessage[val.teamType],
             onOk: () => {
-              navigate('/team-registration');
+              navigate('/my-registration');
             }
           });
         }
         setLoading(false);
-        // console.log(res.data);
       })
       .catch((err) => {
         setLoading(false);
@@ -134,38 +106,15 @@ const TeamRegistration = () => {
       ...values,
       tournament: tournamentID
     };
-    // console.log(teamRegDoc);
     teamRegisterRequest(teamRegDoc);
-    // console.log(values);
   };
-  // console.log(teamRegDoc);
-
-  // const onPopRegReq = (values) => {
-  //   console.log(values);
-  // };
-  const onCreate = (values) => {
-    setOpen(false);
-  };
-
-  // console.log(email);
-
-  // if (loading) {
-  //   return (
-  //     <div
-  //       style={{ minHeight: 'calc(100vh - 170px)' }}
-  //       className="flex justify-center items-center"
-  //     >
-  //       <Spin size="large" />
-  //     </div>
-  //   );
-  // }
 
   if (verdictObj?.Single && verdictObj?.Double) {
     return (
       <Result
         status="error"
         title="You are not eligible for team registration"
-        subTitle="You've already registered your teams as single player team and double player team"
+        subTitle="You've already registered your teams as single player team and Double player team"
         extra={[
           <Link to="/" key="home">
             <Button type="primary">Go Home</Button>
@@ -174,12 +123,6 @@ const TeamRegistration = () => {
       />
     );
   }
-
-  // if (!accept && !loading) {
-  //   return ;
-  // }
-
-  // console.log('ver', verdictObj);
 
   return (
     <div>
@@ -243,23 +186,6 @@ const TeamRegistration = () => {
                   {teamType === 'Double' && (
                     <>
                       <Divider orientation="center">Second Player Info</Divider>
-                      {/* <Form.Item
-                        label="Second Player"
-                        name="secondPlayer"
-                        rules={[
-                          {
-                            required: true,
-                            message: 'second player email is required'
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="email"
-                          placeholder="Second player email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-                      </Form.Item> */}
                       <Form.Item
                         label="Full Name"
                         name="fullName_2"
@@ -274,12 +200,7 @@ const TeamRegistration = () => {
                           }
                         ]}
                       >
-                        <Input
-                          type="text"
-                          placeholder="Second player full name"
-                          // value={email}
-                          // onChange={(e) => setEmail(e.target.value)}
-                        />
+                        <Input type="text" placeholder="Second player full name" />
                       </Form.Item>
                       <Form.Item
                         label="Phone"
@@ -291,17 +212,11 @@ const TeamRegistration = () => {
                           }
                         ]}
                       >
-                        <Input
-                          type="text"
-                          placeholder="Second player phone"
-                          // value={email}
-                          // onChange={(e) => setEmail(e.target.value)}
-                        />
+                        <Input type="text" placeholder="Second player phone" />
                       </Form.Item>
                     </>
                   )}
 
-                  {/* Submit button */}
                   <Form.Item>
                     <Button type="primary" htmlType="submit">
                       Submit
@@ -310,103 +225,9 @@ const TeamRegistration = () => {
                 </Form>
               </Card>
             </div>
-
-            {/* <Button onClick={() => setOpen(true)} type="primary">
-            open modal
-          </Button> */}
-            {/* <PopupRegistration
-              open={open}
-              setOpen={setOpen}
-              onCreate={onCreate}
-              teamRegDoc={teamRegDoc}
-              registerFunction={teamRegisterRequest}
-              onCancel={() => {
-                setOpen(false);
-              }}
-            /> */}
           </div>
         </>
       )}
-
-      {/* drawer */}
-      {/* <div>
-        <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
-          New account
-        </Button>
-        <Drawer
-          width={300}
-          onClose={onClose}
-          open={open}
-          bodyStyle={{
-            paddingBottom: 80
-          }}
-        >
-          <Form name="register" onFinish={onPopRegReq} layout="vertical">
-            <Form.Item
-              label="First Name"
-              name="firstName"
-              rules={[
-                {
-                  required: true,
-                  message: 'First name required'
-                }
-              ]}
-            >
-              <Input placeholder="First Name" />
-            </Form.Item>
-            <Form.Item
-              label="Last Name"
-              name="lastName"
-              rules={[
-                {
-                  required: true,
-                  message: 'Last name required'
-                }
-              ]}
-            >
-              <Input placeholder="Last Name" />
-            </Form.Item>
-
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: 'Email is required'
-                }
-              ]}
-            >
-              <Input
-                type="email"
-                placeholder="Input email"
-                // value={email}
-                defaultValue={email}
-                // onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="Phone"
-              name="phone"
-              rules={[
-                {
-                  required: true,
-                  message: 'Phone is required'
-                }
-              ]}
-            >
-              <Input type="tel" placeholder="Input Phone" />
-            </Form.Item>
-
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </Drawer>
-      </div> */}
     </div>
   );
 };

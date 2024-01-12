@@ -1,12 +1,6 @@
+import { AppstoreAddOutlined, TeamOutlined } from '@ant-design/icons';
+import { Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
-import {
-  AppstoreAddOutlined,
-  TeamOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined
-} from '@ant-design/icons';
-import { Button, Layout, Menu, theme } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import logo from '../img/logo.png';
 const { Header, Content, Footer, Sider } = Layout;
@@ -55,14 +49,7 @@ const AdminLayout = () => {
           bottom: 0
         }}
       >
-        <div
-          className="p-3"
-          // style={{
-          //   height: 32,
-          //   margin: 16
-          //   // background: '#873829'
-          // }}
-        >
+        <div className="p-3">
           <Link to="/" className="flex items-center">
             <img src={logo} className="h-9 mr-3" alt="IANT Logo" />
             {!collapse && (
@@ -99,7 +86,7 @@ const AdminLayout = () => {
           }}
         >
           <div
-            className="p-4 h-screen"
+            className="ml-[50px] md:ml-0 p-4 min-h-screen"
             style={{
               background: colorBgContainer
             }}

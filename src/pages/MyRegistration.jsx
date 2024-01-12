@@ -1,18 +1,25 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { Alert, Badge, Button, Card } from 'antd';
+import { loadStripe } from '@stripe/stripe-js';
+import { Alert, Badge, Button, Card, Modal, Result, Spin } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { BsCurrencyDollar, BsFillPeopleFill } from 'react-icons/bs';
-import { FaDollarSign, FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt } from 'react-icons/fa';
 import { IoPerson } from 'react-icons/io5';
+import { Link, useNavigate } from 'react-router-dom';
+import { regConfirmMessage } from '../constants';
 import { getToken } from '../utils/utils';
-import { loadStripe } from '@stripe/stripe-js';
 // import { FaDollarSign } from 'react-icons/fa6';
 
 const MyRegistration = () => {
   const [myRegs, setMyRegs] = useState([]);
   const [delLoader, setDelLoader] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [stripeLoading, setStripeLoading] = useState(false);
+  console.log(myRegs);
+
+  const navigate = useNavigate();
+
   const handleMyRegistrations = () => {
     axios
       .get(process.env.REACT_APP_SERVER_ORIGIN + 'myRegistrations', {
@@ -23,13 +30,12 @@ const MyRegistration = () => {
       .then((res) => res.data)
       .then((data) => {
         setMyRegs(data);
-        // openNotificationWithIcon('success');
-        // toast.success('Tournament creation successful!');
-        // navigate('/admin/tournaments');
-        // console.log(data);
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -47,9 +53,6 @@ const MyRegistration = () => {
       )
       .then((res) => res.data)
       .then((data) => {
-        // openNotificationWithIcon('success');
-        // toast.success('Tournament creation successful!');
-        // navigate('/admin/tournaments');
         handleMyRegistrations();
         console.log(data);
       })
@@ -80,7 +83,7 @@ const MyRegistration = () => {
       )
       .then((res) => res.data)
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         if (!data.sessionId) {
           return;
         }
@@ -100,6 +103,43 @@ const MyRegistration = () => {
       });
   };
 
+  const handlePaymentModal = (team) => {
+    if (team?.paymentStatus === 'Verified') return;
+    Modal.success({
+      title: `${team.teamType} team registration instruction`,
+      content: regConfirmMessage[team.teamType],
+      onOk: () => {
+        return;
+      }
+    });
+  };
+
+  if (loading) {
+    return (
+      <div
+        style={{ minHeight: 'calc(100vh - 170px)' }}
+        className="flex justify-center items-center"
+      >
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  if (myRegs.length === 0) {
+    return (
+      <Result
+        status="404"
+        title="No Team Registered"
+        subTitle="You haven't registered in any tournament yet. Go to Tournament Registration page."
+        extra={
+          <Link to="/team-registration">
+            <Button type="primary">Tournament Registration</Button>
+          </Link>
+        }
+      />
+    );
+  }
+
   return (
     <div className="container">
       <p className="text-2xl text-center font-semibold">
@@ -115,13 +155,13 @@ const MyRegistration = () => {
               <Card
                 className="w-full"
                 title={
-                  <p className="text-xl font-semibold">
-                    {reg.tournament.tournamentName}{' '}
+                  <p className="text-xl font-semibold flex gap-4 items-center">
                     {reg.teamType === 'Single' ? (
                       <IoPerson className="inline" />
                     ) : (
                       <BsFillPeopleFill className="inline" />
                     )}
+                    {reg.tournament.tournamentName}
                   </p>
                 }
                 bordered
@@ -151,19 +191,21 @@ const MyRegistration = () => {
                   </div>
                 )}
                 <div className="flex justify-end gap-2">
-                  <Button type="primary" danger onClick={() => handleDeleteTeam(reg._id)}>
-                    <div className="flex items-center gap 2">
-                      <FaTrashAlt className="mr-1" />
-                      Delete Team
-                    </div>
-                  </Button>
+                  {true && (
+                    <Button type="primary" danger onClick={() => handleDeleteTeam(reg._id)}>
+                      <div className="flex items-center gap 2">
+                        <FaTrashAlt className="mr-1" />
+                        Delete Team
+                      </div>
+                    </Button>
+                  )}
                   {reg.paymentStatus !== 'Verified' && (
                     <Button
                       type="primary"
-                      onClick={() => handleCreateStripeSession(reg._id)}
+                      onClick={() => handlePaymentModal(reg)}
                       loading={stripeLoading}
                     >
-                      <FaDollarSign className="inline" />
+                      Pay $
                       {reg.teamType === 'Single'
                         ? reg.tournament.singlePlayerEntryFee
                         : reg.tournament.doublePlayerEntryFee}

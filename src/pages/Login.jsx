@@ -4,7 +4,7 @@ import { PhoneFilled, MailFilled } from '@ant-design/icons';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { getToken, setToken } from '../utils/utils';
+import { getToken, setSession, setToken } from '../utils/utils';
 import { toast } from 'react-toastify';
 
 const Login = () => {
@@ -30,6 +30,7 @@ const Login = () => {
   // }
 
   const submitRequest = (val) => {
+    setLoading(true);
     axios
       .post(process.env.REACT_APP_SERVER_ORIGIN + 'login', val, {
         headers: {
@@ -43,11 +44,13 @@ const Login = () => {
         // console.log(res.headers['x-auth-token']);
         setToken(res.headers['x-auth-token']);
         res.data?.id && setUser(res.data);
+        setSession(res.data);
       })
       .catch((err) => {
         setUser(null);
         console.log(err);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const onFinish = (values) => {
