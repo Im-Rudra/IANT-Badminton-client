@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Editor from '../../components/Editor/Editor';
 import { Button } from 'antd';
 import axios from 'axios';
@@ -17,6 +17,7 @@ const HomePageEditor = () => {
   const editorRef = useRef();
   const [isSaving, setIsSaving] = useState(false);
   const isReadOnly = () => editorRef.current?.readOnly.isEnabled;
+  const [homepageData, setHomepageData] = useState(null);
 
   const getEditorData = async () => {
     const blocks = await editorRef.current?.save();
@@ -58,7 +59,19 @@ const HomePageEditor = () => {
     }
   };
 
-  console.log(editorRef.current?.readOnly);
+  useEffect(() => {
+    axios
+      .get(process.env.REACT_APP_SERVER_ORIGIN + 'homepage', {
+        headers: {
+          Authorization: getToken()
+        }
+      })
+      .then((data) => {
+        console.log(data.data);
+        setHomepageData(data.data[0]);
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
   return (
     <div>
@@ -73,7 +86,11 @@ const HomePageEditor = () => {
           {isReadOnly() ? 'Edit' : 'Save'}
         </Button>
       </div>
-      <Editor editorRef={editorRef} readOnly={false} data={getItem()} />
+      {!homepageData ? (
+        <p className="text-center text-3xl font-semibold py-8">loading...</p>
+      ) : (
+        <Editor editorRef={editorRef} readOnly={false} data={JSON.parse(homepageData?.blocks)} />
+      )}
     </div>
   );
 };
