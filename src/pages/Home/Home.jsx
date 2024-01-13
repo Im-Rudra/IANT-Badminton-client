@@ -1,12 +1,10 @@
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { Alert, Avatar, Card, Divider } from 'antd';
-import Meta from 'antd/es/card/Meta';
+import { Card } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import { getItem } from '../Admin/HomePageEditor';
 
-import homeBanner from '../../img/home-banner.jpg';
-import Editor from '../../components/Editor/Editor';
 import axios from 'axios';
+import Editor from '../../components/Editor/Editor';
+import homeBanner from '../../img/home-banner.jpg';
 import { getToken } from '../../utils/utils';
 
 const Home = () => {

@@ -3,10 +3,10 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Alert, Badge, Button, Card, Modal, Result, Spin } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { BsCurrencyDollar, BsFillPeopleFill } from 'react-icons/bs';
+import { BsFillPeopleFill } from 'react-icons/bs';
 import { FaTrashAlt } from 'react-icons/fa';
 import { IoPerson } from 'react-icons/io5';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { regConfirmMessage } from '../constants';
 import { getToken } from '../utils/utils';
 // import { FaDollarSign } from 'react-icons/fa6';
@@ -16,9 +16,6 @@ const MyRegistration = () => {
   const [delLoader, setDelLoader] = useState(false);
   const [loading, setLoading] = useState(true);
   const [stripeLoading, setStripeLoading] = useState(false);
-  console.log(myRegs);
-
-  const navigate = useNavigate();
 
   const handleMyRegistrations = () => {
     axios

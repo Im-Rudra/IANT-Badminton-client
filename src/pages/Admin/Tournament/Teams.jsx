@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
 import { Button, Space, Table, Tag } from 'antd';
 import axios from 'axios';
-import { getToken } from '../../../utils/utils';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { getToken } from '../../../utils/utils';
 
 const Teams = () => {
   const { tournamentID } = useParams();
@@ -31,28 +31,12 @@ const Teams = () => {
           }
         }
       );
-      // console.log(res.data);
-      // return;
       if (res.data.error) {
         toast.error(res.data.message);
         setLoading(false);
         return;
       }
-
-      // if (res.data.length) {
-      //   setTeams(res.data);
-      //   setLoading(false);
-      // }
-      // console.log(res.data);
-      // return;
-      // if (!res.data?.totalTeams) {
-      //   setTotalTeams(0);
-      //   setTeams([]);
-      //   setLoading(false);
-      //   return;
-      // }
       const { data } = res;
-      // setTotalTeams(data?.totalTeams || 0);
       setTeams(data?.map((team) => ({ key: team._id, ...team })));
       toast.success('Team verification successful');
       setLoading(false);
@@ -232,6 +216,7 @@ const Teams = () => {
   useEffect(() => {
     fetchUsers();
     // console.log('fetch teams');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(tableParams)]);
 
   const clearFilters = () => {

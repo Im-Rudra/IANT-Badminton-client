@@ -15,8 +15,6 @@ export const getItem = () => {
 
 const HomePageEditor = () => {
   const editorRef = useRef();
-
-  const [initialData, setInitialData] = useState(getItem());
   const [isSaving, setIsSaving] = useState(false);
   const isReadOnly = () => editorRef.current?.readOnly.isEnabled;
 
@@ -58,14 +56,6 @@ const HomePageEditor = () => {
     } finally {
       setIsSaving(false);
     }
-  };
-
-  const handleSave = async () => {
-    setIsSaving(true);
-    const blocks = await getEditorData();
-    console.log(blocks);
-    setItem(blocks);
-    setIsSaving(false);
   };
 
   console.log(editorRef.current?.readOnly);
