@@ -19,7 +19,7 @@ const Teams = () => {
 
   const verifyTeam = async (teamID) => {
     console.log(teamID);
-    const url = process.env.REACT_APP_SERVER_ORIGIN + 'verifyTeam';
+    const url = process.env.REACT_APP_SERVER_ORIGIN + 'verifyTeamAdmin';
     setLoading(true);
     try {
       const res = await axios.post(

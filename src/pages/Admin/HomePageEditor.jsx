@@ -26,7 +26,7 @@ const HomePageEditor = () => {
   };
 
   const handleSaving = async (editorData) => {
-    console.log(editorRef.current?.readOnly);
+    // console.log(editorRef.current?.readOnly);
 
     if (editorRef.current?.readOnly.isEnabled) {
       editorRef.current?.readOnly.toggle();
@@ -34,11 +34,12 @@ const HomePageEditor = () => {
     }
     setIsSaving(true);
     setItem(editorData);
+    console.log(editorData);
 
     try {
       const response = await axios.post(
         process.env.REACT_APP_SERVER_ORIGIN + 'save-homepage',
-        { blocks: editorData },
+        { id: process.env.REACT_APP_HOMEPAGE_ID, blocks: JSON.stringify(editorData) },
         {
           headers: {
             Authorization: getToken()
@@ -53,7 +54,7 @@ const HomePageEditor = () => {
 
       console.log(response.data);
     } catch (error) {
-      console.log(error.response.data);
+      console.error(error);
     } finally {
       setIsSaving(false);
     }

@@ -18,6 +18,7 @@ const Editor = ({ editorRef, readOnly, data = null }) => {
     const Code = (await import('@editorjs/code')).default;
     const LinkTool = (await import('@editorjs/link')).default;
     const InlineCode = (await import('@editorjs/inline-code')).default;
+    const Delimiter = (await import('@editorjs/delimiter')).default;
 
     const editor = new EditorJS({
       holder: 'editorjs',
@@ -42,6 +43,7 @@ const Editor = ({ editorRef, readOnly, data = null }) => {
             defaultStyle: 'ordered'
           }
         },
+        delimiter: Delimiter,
         checklist: {
           class: Checklist,
           inlineToolbar: true
@@ -51,7 +53,10 @@ const Editor = ({ editorRef, readOnly, data = null }) => {
           class: InlineCode,
           config: {}
         },
-        table: Table,
+        table: {
+          class: Table,
+          inlineToolbar: true
+        },
         embed: Embed
       }
     });

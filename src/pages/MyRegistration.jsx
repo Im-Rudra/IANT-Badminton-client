@@ -174,24 +174,33 @@ const MyRegistration = () => {
                   <div className="my-3">
                     <Alert
                       message={
-                        <span>
-                          Pay <BsCurrencyDollar className="inline" />
-                          <span className="font-bold">
-                            {reg.teamType === 'Single'
-                              ? reg.tournament.singlePlayerEntryFee
-                              : reg.tournament.doublePlayerEntryFee}
-                          </span>{' '}
-                          to verify your team
-                        </span>
+                        <>
+                          <span>
+                            Pay{' '}
+                            <span className="font-bold">
+                              $
+                              {reg.teamType === 'Single'
+                                ? reg.tournament.singlePlayerEntryFee
+                                : reg.tournament.doublePlayerEntryFee}
+                            </span>{' '}
+                            to verify your team
+                          </span>
+                          <p>
+                            To finish your transaction, kindly use Zelle. Please Zelle to -<br />
+                            <span className="text-base font-semibold">
+                              Md. Omar Faruk (214-414-6260).
+                            </span>
+                          </p>
+                        </>
                       }
-                      type="warning"
+                      type="info"
                       showIcon
                       // closable
                     />
                   </div>
                 )}
                 <div className="flex justify-end gap-2">
-                  {true && (
+                  {reg.paymentStatus !== 'Verified' && (
                     <Button type="primary" danger onClick={() => handleDeleteTeam(reg._id)}>
                       <div className="flex items-center gap 2">
                         <FaTrashAlt className="mr-1" />

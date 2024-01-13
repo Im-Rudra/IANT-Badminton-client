@@ -15,3 +15,16 @@ code > .inline-code::after {
 .inline-code {
   font-weight: inherit !important;
 }
+
+.ce-delimiter:before {
+  display: inline-block;
+  content: '' !important;
+  font-size: 0;
+  line-height: 0 !important;
+  width: 100%;
+  height: 2px !important;
+  margin: 20px 0 0 0;
+  border-radius: 1px;
+  background-color: rgb(227, 227, 227);
+  /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); */
+}

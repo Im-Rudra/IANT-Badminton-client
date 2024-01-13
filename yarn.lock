@@ -1379,6 +1379,13 @@
   dependencies:
     "@codexteam/icons" "^0.0.5"
 
+"@editorjs/delimiter@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@editorjs/delimiter/-/delimiter-1.4.0.tgz#328c1072f0d462b3f15b1a22421c8621e065cd3a"
+  integrity sha512-i1Wm3UQsVisM7Fh9focJ1a4kX2l7IxO3zrEd+GmYoPVaNwxb/63GLNbGfCCGZBuvUyzeUDnc8cdhD1QQGwUZIg==
+  dependencies:
+    "@codexteam/icons" "^0.0.5"
+
 "@editorjs/editorjs@^2.28.2":
   version "2.28.2"
   resolved "https://registry.yarnpkg.com/@editorjs/editorjs/-/editorjs-2.28.2.tgz#a265c7d10e83adef81813e4dc0f01fe3464dff50"
