@@ -85,7 +85,7 @@ const TeamRegistration = () => {
           toast.success('Team registration successful');
           Modal.success({
             title: `${val.teamType} team registration successful`,
-            content: regConfirmMessage[val.teamType],
+            content: regConfirmMessage(res.data.tournament)[val.teamType],
             onOk: () => {
               navigate('/my-registration');
             }

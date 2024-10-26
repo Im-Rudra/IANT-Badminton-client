@@ -104,7 +104,7 @@ const MyRegistration = () => {
     if (team?.paymentStatus === 'Verified') return;
     Modal.success({
       title: `${team.teamType} team registration instruction`,
-      content: regConfirmMessage[team.teamType],
+      content: regConfirmMessage(team.tournament)[team.teamType],
       onOk: () => {
         return;
       }
