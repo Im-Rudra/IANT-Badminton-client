@@ -49,7 +49,7 @@ const TournamentCard = ({ tournament, buttonTitle, link }) => {
               valueStyle={{
                 color: '#cf1322'
               }}
-              prefix={<IoPeople style={{ marginBottom: -3 }} />}
+              prefix={<HiUser style={{ marginBottom: -3 }} />}
               // suffix="%"
             />
           </Card>
@@ -63,7 +63,7 @@ const TournamentCard = ({ tournament, buttonTitle, link }) => {
               valueStyle={{
                 color: 'rgb(19, 25, 207)'
               }}
-              prefix={<HiUser style={{ marginBottom: -3 }} />}
+              prefix={<IoPeople style={{ marginBottom: -3 }} />}
               // suffix="%"
             />
           </Card>
