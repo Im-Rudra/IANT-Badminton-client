@@ -10,6 +10,7 @@ import MainMenuButton from '../components/MainMenu/MainMenuButton';
 import useAuth from '../hooks/useAuth';
 import logo from '../img/logo.png';
 import checkAccessiblity from '../utils/checkAccessiblity';
+import { Tooltip } from 'antd';
 
 const mainMenuLists = {
   generalMenuList: [
@@ -81,9 +82,21 @@ const RootLayout = () => {
             <div className="flex items-center md:order-2">
               {user?.id && (
                 <>
-                  <Typography.Text keyboard style={{ marginLeft: 10 }}>
-                    {user.lastName}
-                  </Typography.Text>
+                  <Tooltip title={`${user.firstName} ${user.lastName}`} color='geekblue'>
+                    <span 
+                      className={`
+                        rounded-full 
+                        ring-2 ring-offset-1 
+                        w-8 h-8 
+                        flex items-center justify-center 
+                        bg-green-500 
+                        text-white
+                        cursor-pointer
+                      `}
+                    >
+                      {`${user.firstName[0]}${user.lastName[0]}`.toUpperCase()}
+                    </span>
+                  </Tooltip>
                   <Button onClick={handleLogout} type="primary" style={{ marginLeft: 10 }}>
                     Logout
                   </Button>

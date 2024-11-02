@@ -4,36 +4,36 @@ import React, { useEffect, useState } from 'react';
 import TournamentCard from '../../components/TournamentCard';
 import { getToken } from '../../utils/utils';
 import NoTournament from './NoTournament';
+import { toast } from 'react-toastify';
 
 const OpenTournaments = () => {
-  const [tournament, setTournament] = useState(null);
+  const [tournaments, setTournaments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getTournament = () => {
+  const getTournaments = () => {
     setLoading(true);
     axios
-      .post(process.env.REACT_APP_SERVER_ORIGIN + 'getTournament', null, {
+      .get(process.env.REACT_APP_SERVER_ORIGIN + 'open-tournaments', {
         headers: {
           Authorization: getToken()
         }
       })
       .then((res) => res.data)
       .then((data) => {
-        setTournament(data);
+        setTournaments(data);
         setLoading(false);
-        // console.log(data);
       })
       .catch((err) => {
         setLoading(false);
+        toast.error(err.message)
         console.log(err);
       });
   };
 
   useEffect(() => {
-    getTournament();
+    getTournaments();
   }, []);
 
-  // console.log(tournament);
   if (loading) {
     return (
       <div
@@ -47,12 +47,15 @@ const OpenTournaments = () => {
 
   return (
     <div className="container">
-      {tournament?._id ? (
-        <TournamentCard
-          tournament={tournament}
-          link={tournament._id}
-          buttonTitle="Team Registration"
-        />
+      {tournaments?.length ? (
+        tournaments.map((t) => (
+          <TournamentCard
+            key={t._id}
+            tournament={t}
+            link={t._id}
+            buttonTitle="Team Registration"
+          />
+        ))
       ) : (
         <NoTournament title="No tournament" subTitle="No tournament found for team registration." />
       )}
