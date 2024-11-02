@@ -3,10 +3,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getToken } from '../../../utils/utils';
+import { getEnv, getToken } from '../../../utils/utils';
 
 const Teams = () => {
-  const { tournamentID } = useParams();
+  const { tournamentId } = useParams();
   const [teams, setTeams] = useState([]);
   const [totalTeams, setTotalTeams] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -17,14 +17,23 @@ const Teams = () => {
     }
   });
 
-  const verifyTeam = async (teamID) => {
-    console.log(teamID);
-    const url = process.env.REACT_APP_SERVER_ORIGIN + 'verifyTeamAdmin';
+  const verifyTeam = async (team) => {
+    // console.log(team._id);
+    const Confirm = window.confirm(`
+      Do you want to ${team.paymentStatus === "Verified" ? "unverify" : "verify"} the team?
+    `);
+    if (!Confirm) return;
+    const url = getEnv('SERVER_ORIGIN') + 'verifyTeamAdmin';
     setLoading(true);
     try {
       const res = await axios.post(
         url,
-        { team: teamID, tournament: tournamentID, ...tableParams },
+        { 
+          teamId: team._id, 
+          status: team.paymentStatus === "Verified" ? "Unverified" : "Verified",  
+          tournament: tournamentId, 
+          ...tableParams 
+        },
         {
           headers: {
             Authorization: getToken()
@@ -38,7 +47,7 @@ const Teams = () => {
       }
       const { data } = res;
       setTeams(data?.map((team) => ({ key: team._id, ...team })));
-      toast.success('Team verification successful');
+      toast.success(`Team verification status changed successfully`);
       setLoading(false);
     } catch (err) {
       setTotalTeams(0);
@@ -138,14 +147,15 @@ const Teams = () => {
       key: 'action',
       fixed: 'right',
       width: 70,
-      render: (_e, { _id, paymentStatus }) => (
+      render: (_e, team) => (
         <>
           <Button
-            color="green"
-            disabled={paymentStatus === 'Verified'}
-            onClick={() => verifyTeam(_id)}
+            type='primary'
+            danger={team.paymentStatus === "Verified" ? true : false}
+            color={team.paymentStatus === "Verified" ? "danger" : "primary"}
+            onClick={() => verifyTeam(team)}
           >
-            Verify
+            {team.paymentStatus === "Verified" ? "Unverify" : "Verify"}
           </Button>
           {/* <Button>Hello</Button> */}
         </>
@@ -180,13 +190,13 @@ const Teams = () => {
     // console.log({ pagination, filters, sorter });
   };
 
-  const fetchUsers = async () => {
-    const url = process.env.REACT_APP_SERVER_ORIGIN + 'teams';
+  const getTeams = async () => {
+    const url = getEnv('SERVER_ORIGIN') + 'teams';
     setLoading(true);
     try {
       const res = await axios.post(
         url,
-        { tournament: tournamentID, ...tableParams },
+        { tournamentId, ...tableParams },
         {
           headers: {
             Authorization: getToken()
@@ -214,7 +224,7 @@ const Teams = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    getTeams();
     // console.log('fetch teams');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(tableParams)]);
@@ -239,7 +249,7 @@ const Teams = () => {
         <Button onClick={clearFilters}>Clear filters</Button>
       </Space>
       <Table
-        title={() => <h1 className="font-bold text-xl">Teams</h1>}
+        title={() => <h1 className="font-bold text-xl text-center">Teams</h1>}
         bordered
         size="small"
         columns={columns}

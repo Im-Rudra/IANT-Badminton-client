@@ -54,7 +54,7 @@ const routes = createBrowserRouter(
         <Route path="tournaments" element={<TournamentLayout />}>
           <Route path="" element={<Tournaments />} />
           <Route path="create-tournament" element={<CreateTournament />} />
-          <Route path="teams/:tournamentID" element={<Teams />} />
+          <Route path="teams/:tournamentId" element={<Teams />} />
         </Route>
       </Route>
     </>
