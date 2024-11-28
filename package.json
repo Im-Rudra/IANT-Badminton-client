@@ -28,6 +28,7 @@
     "dotenv": "^16.0.3",
     "flowbite": "^2.2.1",
     "flowbite-react": "^0.7.2",
+    "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-contact-number-input": "^1.1.1",
     "react-dom": "^18.2.0",
