@@ -28,11 +28,11 @@ const Teams = () => {
     try {
       const res = await axios.post(
         url,
-        { 
-          teamId: team._id, 
-          status: team.paymentStatus === "Verified" ? "Unverified" : "Verified",  
-          tournament: tournamentId, 
-          ...tableParams 
+        {
+          teamId: team._id,
+          status: team.paymentStatus === "Verified" ? "Unverified" : "Verified",
+          tournament: tournamentId,
+          ...tableParams
         },
         {
           headers: {
@@ -48,6 +48,42 @@ const Teams = () => {
       const { data } = res;
       setTeams(data?.map((team) => ({ key: team._id, ...team })));
       toast.success(`Team verification status changed successfully`);
+      setLoading(false);
+    } catch (err) {
+      setTotalTeams(0);
+      setTeams([]);
+      setLoading(false);
+      console.log(err);
+    }
+  };
+
+  const deleteTeam = async (team) => {
+    const Confirm = window.confirm(`
+      Do you want to delete the team?
+    `);
+    if (!Confirm) return;
+    const url = `${getEnv('SERVER_ORIGIN')}deleteTeam/${team._id}`;
+    setLoading(true);
+    try {
+      const res = await axios.delete(
+        url,
+        {
+          headers: {
+            Authorization: getToken()
+          }
+        }
+      );
+      if (res.data.error) {
+        toast.error(res.data.message);
+        setLoading(false);
+        return;
+      }
+      if (res.data.deletedCount > 0) {
+        setTeams((prev) => prev.filter((t) => t._id !== team._id));
+        toast.success(`Team deleted successfully`);
+      } else {
+        toast.error(`Team not found`);
+      }
       setLoading(false);
     } catch (err) {
       setTotalTeams(0);
@@ -156,6 +192,14 @@ const Teams = () => {
             onClick={() => verifyTeam(team)}
           >
             {team.paymentStatus === "Verified" ? "Unverify" : "Verify"}
+          </Button>
+          <Button
+            type='primary'
+            danger
+            color={team.paymentStatus === "Verified" ? "danger" : "primary"}
+            onClick={() => deleteTeam(team)}
+          >
+            Delete
           </Button>
           {/* <Button>Hello</Button> */}
         </>

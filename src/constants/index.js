@@ -13,8 +13,8 @@ export const regConfirmMessage = (tournament) => ({
       <Alert
         message={
           <p>
-            To finish your transaction, kindly use Zelle. Please Zelle to -<br />
-            <span className="text-lg font-semibold">Md. Omar Faruk (214-414-6260).</span>
+            To finish your transaction, kindly use <b>Zelle</b>. Please Zelle to -<br />
+            <span className="text-lg font-semibold">{tournament.paymentPhoneNumber}.</span>
           </p>
         }
         type="info"
@@ -33,8 +33,8 @@ export const regConfirmMessage = (tournament) => ({
       <Alert
         message={
           <p>
-            To finish your transaction, kindly use Zelle. Please Zelle to -<br />
-            <span className="text-lg font-semibold">Md. Omar Faruk (214-414-6260).</span>
+            To finish your transaction, kindly use <b>Zelle</b>. Please Zelle to -<br />
+            <span className="text-lg font-semibold">{tournament.paymentPhoneNumber}.</span>
           </p>
         }
         type="info"

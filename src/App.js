@@ -33,7 +33,7 @@ const routes = createBrowserRouter(
     <>
       <Route path="/" element={<RootLayout />}>
         <Route path="" element={<Home />} />
-        <Route path="team-registration" element={<OpenTournaments />} />
+        {/* <Route path="team-registration" element={<OpenTournaments />} /> */}
         <Route path="my-registration" element={<MyRegistration />} />
         <Route path="team-registration/:tournamentID" element={<TeamRegistration />} />
         <Route path="login" element={<Login />} />

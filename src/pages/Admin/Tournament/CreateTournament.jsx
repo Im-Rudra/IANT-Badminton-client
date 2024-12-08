@@ -34,6 +34,7 @@ const CreateTournament = () => {
       })
       .catch((err) => {
         console.log(err);
+        toast.error('Tournament creation failed!');
       });
   };
 
@@ -129,6 +130,34 @@ const CreateTournament = () => {
                 ]}
               >
                 <DatePicker picker="year" />
+              </Form.Item>
+
+              {/* Payment phone number */}
+              <Form.Item
+                label="Payment phone number"
+                name="paymentPhoneNumber"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Payment phone number is required'
+                  }
+                ]}
+              >
+                <Input placeholder="Enter payment phone number..." />
+              </Form.Item>
+
+              {/* Description */}
+              <Form.Item
+                label="Tournament Description"
+                name="description"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Tournament description is required'
+                  }
+                ]}
+              >
+                <Input.TextArea rows={4} placeholder="Enter tournament description..." />
               </Form.Item>
 
               {/* Submit button */}

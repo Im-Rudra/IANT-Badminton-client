@@ -21,11 +21,11 @@ const mainMenuLists = {
     }
   ],
   userMenuList: [
-    {
-      title: 'Tournament Registration',
-      url: 'team-registration',
-      icon: <AiOutlineUsergroupAdd />
-    },
+    // {
+    //   title: 'Tournament Registration',
+    //   url: 'team-registration',
+    //   icon: <AiOutlineUsergroupAdd />
+    // },
     {
       title: 'My Registration',
       url: 'my-registration',
@@ -83,13 +83,13 @@ const RootLayout = () => {
               {user?.id && (
                 <>
                   <Tooltip title={`${user.firstName} ${user.lastName}`} color='geekblue'>
-                    <span 
+                    <span
                       className={`
-                        rounded-full 
-                        ring-2 ring-offset-1 
-                        w-8 h-8 
-                        flex items-center justify-center 
-                        bg-green-500 
+                        rounded-full
+                        ring-2 ring-offset-1
+                        w-8 h-8
+                        flex items-center justify-center
+                        bg-green-500
                         text-white
                         cursor-pointer
                       `}

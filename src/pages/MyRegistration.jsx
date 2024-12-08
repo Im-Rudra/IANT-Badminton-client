@@ -129,7 +129,7 @@ const MyRegistration = () => {
         title="No Team Registered"
         subTitle="You haven't registered in any tournament yet. Go to Tournament Registration page."
         extra={
-          <Link to="/team-registration">
+          <Link to="/">
             <Button type="primary">Tournament Registration</Button>
           </Link>
         }
@@ -185,7 +185,7 @@ const MyRegistration = () => {
                           <p>
                             To finish your transaction, kindly use Zelle. Please Zelle to -<br />
                             <span className="text-base font-semibold">
-                              Md. Omar Faruk (214-414-6260).
+                              {reg.tournament.paymentPhoneNumber}
                             </span>
                           </p>
                         </>
@@ -197,14 +197,14 @@ const MyRegistration = () => {
                   </div>
                 )}
                 <div className="flex justify-end gap-2">
-                  {reg.paymentStatus !== 'Verified' && (
+                  {/* {reg.paymentStatus !== 'Verified' && (
                     <Button type="primary" danger onClick={() => handleDeleteTeam(reg._id)}>
                       <div className="flex items-center gap 2">
                         <FaTrashAlt className="mr-1" />
                         Delete Team
                       </div>
                     </Button>
-                  )}
+                  )} */}
                   {reg.paymentStatus !== 'Verified' && (
                     <Button
                       type="primary"
