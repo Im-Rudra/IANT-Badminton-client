@@ -1,6 +1,6 @@
 import { Button, Card, Form, Input, Spin } from 'antd';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth';
 import { getToken, setToken } from '../utils/utils';
@@ -164,6 +164,9 @@ const Register = () => {
               </Button>
             </Form.Item>
           </Form>
+          <p className='text-center'>
+            Already have an account? <Link to="/login">Login</Link>
+          </p>
         </Card>
       </div>
     </div>

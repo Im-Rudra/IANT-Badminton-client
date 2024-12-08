@@ -12,8 +12,11 @@ import Editor from "../../components/Editor/Editor";
 import homeBanner from "../../img/home-banner.jpg";
 import { getToken } from "../../utils/utils";
 import moment from "moment/moment";
+import useAuth from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const Home = () => {
+  const { user } = useAuth();
   const editor = useRef();
   const [homepageData, setHomepageData] = useState(null);
   const [tournaments, setTournaments] = useState([]);
@@ -26,7 +29,6 @@ const Home = () => {
         },
       })
       .then((data) => {
-        console.log(data.data);
         setTournaments(data.data);
       })
       .catch((error) => console.error(error));
@@ -118,7 +120,7 @@ const Home = () => {
                 </div>
 
                 {/* Register Button */}
-                <a href={`/team-registration/${tournament._id}`}>
+                <Link to={!user ? "/register" : `/team-registration/${tournament._id}`}>
                   <Button
                     type="primary"
                     size="large"
@@ -128,7 +130,7 @@ const Home = () => {
                     hover:!to-indigo-700 !border-0 !rounded-lg !font-medium !shadow-lg hover:!shadow-xl transition-all duration-300"
                   >
                     <div className="flex items-center justify-center space-x-2">
-                      <span>Register Now</span>
+                      <span>{!user ? "Create an account" : "Register Now"}</span>
                       <svg
                         className="w-5 h-5"
                         fill="none"
@@ -144,7 +146,7 @@ const Home = () => {
                       </svg>
                     </div>
                   </Button>
-                </a>
+                </Link>
               </div>
             ))}
           </div>

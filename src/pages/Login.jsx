@@ -3,7 +3,7 @@ import { Button, Card, Checkbox, Form, Input, Spin } from 'antd';
 import { PhoneFilled, MailFilled } from '@ant-design/icons';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getToken, setSession, setToken } from '../utils/utils';
 import { toast } from 'react-toastify';
 
@@ -134,6 +134,7 @@ const Login = () => {
               </Button>
             </Form.Item>
           </Form>
+          <p className='text-center'>Don't have an account? <Link to="/register">Create Account</Link></p>
         </Card>
       </div>
     </div>
