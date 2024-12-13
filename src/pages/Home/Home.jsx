@@ -38,10 +38,10 @@ const Home = () => {
     <div>
       <div className="flex justify-center items-center">
         <div className="w-screen">
-          <h2 className="text-center text-2xl font-semibold mb-4">
+          {/* <h2 className="text-center text-2xl font-semibold mb-4">
             Open Tournaments
-          </h2>
-          <div className="container mx-auto grid grid-cols-1">
+          </h2> */}
+          <div className="container mx-auto grid grid-cols-1 mt-4">
             {tournaments.map((tournament) => (
               <div
                 key={tournament._id}
@@ -95,9 +95,9 @@ const Home = () => {
 
                 {/* Description Section */}
                 <div className="mb-6 p-4 bg-gradient-to-br from-gray-50 to-white rounded-lg border border-gray-100">
-                  <p className="text-gray-600 leading-relaxed">
+                  <pre className="text-gray-600 leading-relaxed">
                     {tournament.description}
-                  </p>
+                  </pre>
                 </div>
 
                 {/* Countdown Section */}
@@ -112,7 +112,7 @@ const Home = () => {
                   ) : (
                     <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 p-4 rounded-lg">
                       <p className="text-center text-sm font-medium text-gray-600 mb-2">
-                        Tournament Ends Within
+                        Registration Ends Within
                       </p>
                       <CountdownTimer time={tournament.endTime} />
                     </div>
@@ -120,17 +120,24 @@ const Home = () => {
                 </div>
 
                 {/* Register Button */}
-                <Link to={!user ? "/register" : `/team-registration/${tournament._id}`}>
+                <Link
+                  to={
+                    !user ? "/register" : `/team-registration/${tournament._id}`
+                  }
+                >
                   <Button
                     type="primary"
                     size="large"
                     disabled={moment(tournament.startTime).isAfter()}
-
                     className="w-full !h-12 !bg-gradient-to-r !from-blue-600 !to-indigo-600 hover:!from-blue-700
                     hover:!to-indigo-700 !border-0 !rounded-lg !font-medium !shadow-lg hover:!shadow-xl transition-all duration-300"
                   >
                     <div className="flex items-center justify-center space-x-2">
-                      <span>{!user ? "Create an account" : "Register Now"}</span>
+                      <span>
+                        {!user
+                          ? "Create an account"
+                          : "Get into the Tournament"}
+                      </span>
                       <svg
                         className="w-5 h-5"
                         fill="none"
@@ -193,9 +200,13 @@ const CountdownTimer = ({ time }) => {
       const newTimeLeft = moment.duration(moment(time).diff(moment()));
       setTimeLeft(newTimeLeft);
 
-      // Check which fields changed
+      // Calculate total days including months and years
+      const totalDays = Math.floor(newTimeLeft.asDays());
+      console.log(totalDays);
+
+      // Current values using total days instead of just the days part
       const currentValues = {
-        days: newTimeLeft.days(),
+        days: totalDays,
         hours: newTimeLeft.hours(),
         minutes: newTimeLeft.minutes(),
         seconds: newTimeLeft.seconds(),
@@ -226,10 +237,13 @@ const CountdownTimer = ({ time }) => {
     return () => clearInterval(timer);
   }, [time]);
 
+  // Calculate total days including months and years
+  const totalDays = Math.floor(timeLeft.asDays());
+
   return (
     <div className="grid grid-cols-4 gap-2 text-center">
       <TimeBlock
-        value={timeLeft.days()}
+        value={totalDays}
         label="Days"
         hasChanged={changedFields.days}
       />
